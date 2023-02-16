@@ -1,0 +1,9 @@
+
+- speech to text always running and responding only when saying "Jarvis"
+- add basic context variables such as OS, user's name etc.
+- FIFO history
+- sessions + save session to file (flush) + FIFO save to file before evicting line. 
+- better answer parsing for multiple commands with /!xxxx/!
+- genesis context explaining structure of history, user's vars, sessions, how to run commands and how to run queries.
+- better context management with a DB and topics, e.g /s topic:userprofile content:"don't warn me about deletions." and /q topic:userprofile query:all.
+- update genesis context so that the bot will understand he's connected to a program and can query the context db for missing context. 
