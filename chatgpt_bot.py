@@ -1,5 +1,5 @@
-import openai  # OpenAI API for processing text and reply like a human.
-import os  # For getting the API key from environment variable.
+import openai                   # OpenAI API for processing text and reply like a human.
+import os                       # For getting the API key from environment variable.
 from dotenv import load_dotenv  # For getting the API key from .env file into the environment.
 
 load_dotenv()
