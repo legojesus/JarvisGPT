@@ -1,28 +1,30 @@
-### J.A.R.V.I.S AI in Python - A speech-to-text to ChatGPT to text-to-speech program. 
-### Basically allows you to talk to ChatGPT and hear it talking back. 
-# Author: Yaron K.
-# Date: 2023-02-12
 
-#from speech_to_text import get_voice_prompt_from_user
-from chatgpt import send_prompt_to_openai
-#from text_to_speech import read_answer_to_user
+from speech_to_text import get_voice_prompt_from_user
+from chatgpt_bot import send_prompt_to_openai
+from text_to_speech import read_answer_to_user
 
 
 # Keep program running non-stop
-#while True:
-    # Get prompt from user's voice and convert to text
-    #prompt = get_voice_prompt_from_user()
+# while True:
+#     # Get prompt from user's voice and convert to text
+#     prompt = get_voice_prompt_from_user()
+#
+#     # Send prompt to OpenAI and get answer
+#     answer = send_prompt_to_openai(prompt)
+#     # Read the answer back to the user
+#     read_answer_to_user(answer)
 
-    # Send prompt to OpenAI and get answer
-    #answer = send_prompt_to_openai(prompt)
 
-    # Read the answer back to the user
-    #read_answer_to_user(answer)
+import subprocess   # Running linux shell commands
+import queue        # FIFO for session history
 
-import subprocess
+genesis_context = 'If I ask you to do something on my computer, only reply with the necessary linux bash command ' \
+                  'to perform it, starting with the ! sign, unless I specifically ask you to answer normally without any commands. '\
+                  'For example, if I ask you to install something, reply with !apt-get install whatever I asked to install.' \
+                  'I connected you to a program that parses your replies and runs the exclamation mark commands in your replies, so never use SUDO in commands unless I specifically ask you to do so.'\
+                  'Any other question that is not related to my computer you can answer normally. ' \
 
-init_context = 'If I ask or request something about my computer, only reply with the necessary linux shell command to perform it, starting with the ! sign. Any other question that is not related to my computer you can answer regularly.\n'
-history = init_context
+history = genesis_context
 
 while True:
     prompt = input("Talk to JARVIS: ")
@@ -31,25 +33,46 @@ while True:
         break
     elif prompt == 'reset':
         print("Clearing history session, starting new conversation.")
-        history = init_context
+        history = genesis_context
         continue
 
-    history += prompt
-    #query = context + history
+    history += prompt + '\n'
     answer = send_prompt_to_openai(history)
     answer = str(answer.strip())
-    #answer = "!pwd"
-    history += answer
+    history += answer + '\n'
 
     if answer.startswith('!'):
         try:
             answer = answer.replace('!', '')
-            command = subprocess.run(answer, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
-            print("output:", command.stdout)
-            history += command.stdout
-            if command.stderr:
-                print("error:", command.stderr)
-                history += command.stderr
+            command = subprocess.run(answer, shell=True,
+                                     universal_newlines=True,
+                                     capture_output=True,
+                                     text=True)
+
+            if len(command.stdout) > 0:
+                print("Command's output:", command.stdout)
+                history += 'This is the output of the command: ' + command.stdout + '\n' + "Answer normally according to this output." + '\n'
+                answer = send_prompt_to_openai(history)
+                answer = str(answer.strip())
+                history += answer + '\n'
+                read_answer_to_user(answer)
+
+            elif len(command.stderr) > 0:
+                print("Command error:", command.stderr)
+                history += 'This is the output of the command: ' + command.stdout + '\n' "Explain the output and why the command failed when you ran it." + '\n'
+                answer = send_prompt_to_openai(history)
+                answer = str(answer.strip())
+                history += answer + '\n'
+                read_answer_to_user(answer)
+
+            else:
+                answer = "Done."
+                print("Done.")
+                read_answer_to_user(answer)
+
         except Exception as e:
             history += str(e)
             print("Error: ", e)
+
+    else:
+        read_answer_to_user(answer)
