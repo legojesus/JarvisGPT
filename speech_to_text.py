@@ -28,7 +28,7 @@ def get_voice_prompt_from_user():
             
             # Using google to convert speech to text
             new_text = listenbot.recognize_google(audio)
-            print("Voice input: ",new_text)
+            print("Voice input: ", new_text)
 
             return new_text
              
