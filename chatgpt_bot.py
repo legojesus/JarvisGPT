@@ -21,7 +21,7 @@ def send_prompt_to_openai(prompt):
     """
     # Send prompt to ChatGPT and get possible replies. Reference: https://platform.openai.com/docs/api-reference/completions/create
     completion = openai.Completion.create(engine=model_engine, prompt=prompt, max_tokens=1000, n=1, stop=None,
-                                          temperature=0.3)
+                                          temperature=0.8)
 
     # Get the first reply
     if completion is not None:
