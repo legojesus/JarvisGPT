@@ -7,10 +7,11 @@ OS = platform.system()
 
 # Init pyttsx3 (Py Text-To-Speech)
 talkbot = pyttsx3.init()
-talkbot.setProperty('rate', 100)        # Setting the voice's talking speed
+talkbot.setProperty('rate', 130)        # Setting the voice's talking speed
 talkbot.setProperty('volume', 1.0)      # Setting the volume level between 0 and 1
 voices = talkbot.getProperty('voices')  # Getting details of current voice
 talkbot.setProperty('voice', 0)         # 0 for male voice.
+
 
 # for voice in voices:
 #     talkbot.setProperty('voice', voice.id)
@@ -38,4 +39,3 @@ def read_answer_to_user(answer):
                        universal_newlines=True,
                        capture_output=True,
                        text=True)
-

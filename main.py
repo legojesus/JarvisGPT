@@ -16,13 +16,25 @@ from text_to_speech import read_answer_to_user
 
 
 import subprocess   # Running linux shell commands
-import queue        # FIFO for session history
+import platform
 
-genesis_context = 'If I ask you to do something on my computer, only reply with the necessary linux bash command ' \
+OS = platform.system()
+USERNAME = "\"Yaron Kachalon\""
+
+genesis_context = ""
+
+if OS == "Linux":
+    genesis_context = 'If I ask you to do something on my computer, only reply with the necessary linux bash command ' \
                   'to perform it, starting with the ! sign, unless I specifically ask you to answer normally without any commands. '\
-                  'For example, if I ask you to install something, reply with !apt-get install whatever I asked to install.' \
-                  'I connected you to a program that parses your replies and runs the exclamation mark commands in your replies, so never use SUDO in commands unless I specifically ask you to do so.'\
-                  'Any other question that is not related to my computer you can answer normally. ' \
+                  f'For example, if I ask you to install something, reply with !apt-get install whatever I asked to install. My username in the OS is {USERNAME}. ' \
+                  'Never use SUDO in commands unless I specifically ask you to do so.'\
+                  'Any other question that is not related to my computer you can answer normally.' + '\n'
+elif OS == "Windows":
+    genesis_context = 'If I ask you to do something on my computer, only reply with the relevant Windows CMD command ' \
+                  'to perform the task, starting with the ! sign, without any additional output, unless I specifically ask you to answer normally without any commands. '\
+                  f'For example, If I ask you to create a new folder on my desktop, only reply with !mkdir C:\\Users\\{USERNAME}\\Desktop\\New Folder". ' \
+                  'Any other question that is not related to my computer you can answer normally.' + '\n'
+
 
 history = genesis_context
 
@@ -43,7 +55,8 @@ while True:
 
     if answer.startswith('!'):
         try:
-            answer = answer.replace('!', '')
+            answer = answer.replace('!', '', )
+            answer = answer.replace('\n', ' && ')
             command = subprocess.run(answer, shell=True,
                                      universal_newlines=True,
                                      capture_output=True,
@@ -55,24 +68,24 @@ while True:
                 answer = send_prompt_to_openai(history)
                 answer = str(answer.strip())
                 history += answer + '\n'
-                read_answer_to_user(answer)
+                #read_answer_to_user(answer)
 
             elif len(command.stderr) > 0:
                 print("Command error:", command.stderr)
-                history += 'This is the output of the command: ' + command.stdout + '\n' "Explain the output and why the command failed when you ran it." + '\n'
+                history += 'The command failed. explain why using this output: ' + command.stdout + '\n'
                 answer = send_prompt_to_openai(history)
                 answer = str(answer.strip())
                 history += answer + '\n'
-                read_answer_to_user(answer)
+                #read_answer_to_user(answer)
 
             else:
                 answer = "Done."
                 print("Done.")
-                read_answer_to_user(answer)
+                #read_answer_to_user(answer)
 
         except Exception as e:
             history += str(e)
             print("Error: ", e)
 
-    else:
-        read_answer_to_user(answer)
+    #else:
+        #read_answer_to_user(answer)
