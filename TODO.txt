@@ -1,4 +1,5 @@
 
+- Different subprocess.run commands for linux and windows (windows requires powershell). 
 - speech to text always running and responding only when saying "Jarvis"
 - add basic context variables such as OS, user's name etc.
 - FIFO history
