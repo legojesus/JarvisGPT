@@ -1,8 +1,13 @@
-import speech_recognition   # Speech to text library.
+import speech_recognition   # Speech to text library
+from logs import logger     # Logging
 
 # Init Speech Recognition
-listenbot = speech_recognition.Recognizer()
-
+try:
+    logger.info('Initializing Speech-To-Text engine')
+    listenbot = speech_recognition.Recognizer()
+    logger.info('Speech-To-Text engine successfully initialized')
+except Exception as e:
+    logger.error(f'Failed to initilize Speech-To-Text engine. Make sure you have all required depdendencies of this app.\n {e}')
 
 def get_voice_prompt_from_user():
     """
@@ -16,7 +21,7 @@ def get_voice_prompt_from_user():
     """
 
     try:
-        # Use the microphone as source for input.
+        logger.info('Waiting for voice input from user')
         with speech_recognition.Microphone() as source:
              
             # Wait for a second to let the recognizer adjust the volume threshold based on the surrounding noise level
@@ -26,14 +31,13 @@ def get_voice_prompt_from_user():
             print("Listening. Please talk now.")
             audio = listenbot.listen(source)
             
-            # Using google to convert speech to text
+            logger.info('Converting user voice prompt to text via Google API')
             new_text = listenbot.recognize_google(audio)
-            print("Voice input: ", new_text)
 
             return new_text
              
     except speech_recognition.RequestError as e:
-        print("Could not process speech recognition request; {0}".format(e))
+        logger.error(f"Could not process speech recognition request.\n {e}")
          
     except speech_recognition.UnknownValueError:
-        print("Could not understand what you said. Maybe there's a lot of background noise.")
+        logger.warning('Could not understand voice input. Either user didnt talk, wasnt clear, or theres a lot of background noise')

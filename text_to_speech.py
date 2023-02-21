@@ -1,26 +1,24 @@
-import platform     # Figure out the OS of the user
-import pyttsx3      # Text to speech synthesizer for Windows (can work on linux but voice sounds horrible).
-import subprocess   # Manually activate espeak on linux as it sounds better than pyttsx3.
+import pyttsx3          # Text to speech synthesizer for Windows (can work on linux but voice sounds horrible)
+import subprocess       # Manually activate espeak as it sounds better than pyttsx3 on linux. On Windows, pyttsx3 sounds great
+from logs import logger # Logging
 
-
-OS = platform.system()
 
 # Init pyttsx3 (Py Text-To-Speech)
-talkbot = pyttsx3.init()
-talkbot.setProperty('rate', 130)        # Setting the voice's talking speed
-talkbot.setProperty('volume', 1.0)      # Setting the volume level between 0 and 1
-voices = talkbot.getProperty('voices')  # Getting details of current voice
-talkbot.setProperty('voice', 0)         # 0 for male voice.
+try:
+    logger.info('Initializing Text-To-Speech engine')
+    talkbot = pyttsx3.init()
+    talkbot.setProperty('rate', 130)        # Setting the voice's talking speed
+    talkbot.setProperty('volume', 1.0)      # Setting the volume level between 0 and 1
+    voices = talkbot.getProperty('voices')  # Getting details of current voice
+    talkbot.setProperty('voice', 0)         # 0 for male voice.
+    logger.info('Text-To-Speech engine successfully initialized')
+except Exception as e:
+    logger.error(f'Failed to initialize Text-ToSpeech engine. Make sure you have all the required dependencies to run this app. \n {e}')
 
 
-# for voice in voices:
-#     talkbot.setProperty('voice', voice.id)
-#     print(voice)
-# talkbot.say('The quick brown fox jumped over the lazy dog.')
-# talkbot.runAndWait()
 
 
-def read_answer_to_user(answer):
+def read_answer_to_user(answer, OS):
     """
     Reads ChatGPT's answer back to the user (text-to-speech).
 
@@ -30,12 +28,19 @@ def read_answer_to_user(answer):
         Returns:
             None.
     """
+
     if OS == "Windows":
-        talkbot.say(answer)
-        talkbot.runAndWait()
-        talkbot.stop()
+        try:
+            logger.info('Reading answer to user (Windows TTS)')
+            talkbot.say(answer)
+            talkbot.runAndWait()
+            talkbot.stop()
+        except Exception as e:
+            logger.error(f'Error in Windows Text-To-Speech engine. Make sure that you have all required dependencies for this app.\n {e}')
+    
     elif OS == "Linux":
-        subprocess.run(f"espeak -v mb-en1 -s 140 '{answer}'", shell=True,
-                       universal_newlines=True,
-                       capture_output=True,
-                       text=True)
+        try:
+            logger.info('Reading answer to use (Linux TTS)')
+            subprocess.run(f"espeak -v mb-en1 -s 140 '{answer}'", shell=True, universal_newlines=True, capture_output=True, text=True)
+        except Exception as e:
+            logger.error(f'Error in Linux Text-To-Speech engine. Make sure that you have all required dependencies of this app. \n {e}')

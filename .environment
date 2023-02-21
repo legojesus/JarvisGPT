@@ -1,0 +1,5 @@
+# Add your API key and your username in Linux/Windows here, then rename this file to ".env" before activating the app.
+
+DEBUG="FALSE"
+USERNAME="\"John Smith\""
+API_KEY="xxxxxxxxx"
