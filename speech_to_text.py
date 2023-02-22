@@ -25,19 +25,36 @@ def get_voice_prompt_from_user():
         with speech_recognition.Microphone() as source:
              
             # Wait for a second to let the recognizer adjust the volume threshold based on the surrounding noise level
-            listenbot.adjust_for_ambient_noise(source, duration=0.5)
+            listenbot.adjust_for_ambient_noise(source, duration=1.0)
              
             # Listens to the user's voice input
             print("Listening. Please talk now.")
+            listenbot.pause_threshold = 1
             audio = listenbot.listen(source)
             
-            logger.info('Converting user voice prompt to text via Google API')
-            new_text = listenbot.recognize_google(audio)
+            if audio is not None:
+                logger.info('Converting user voice prompt to text via Google API')
+                new_text = listenbot.recognize_google(audio)
+                logger.info(f'Converted voice to text: {new_text}')
+                print("Voice input: ", new_text)
 
-            return new_text
+                return new_text
+            return None
              
     except speech_recognition.RequestError as e:
         logger.error(f"Could not process speech recognition request.\n {e}")
+
          
     except speech_recognition.UnknownValueError:
-        logger.warning('Could not understand voice input. Either user didnt talk, wasnt clear, or theres a lot of background noise')
+        logger.info('No voice input detected.')
+    
+    except Exception as e:
+        logger.error(f"{e}")
+
+
+# TEST:
+# while True:
+#     user_text = get_voice_prompt_from_user()
+#     if user_text is not None:
+#         print(user_text)
+

@@ -1,11 +1,7 @@
 
-- Different subprocess.run commands for linux and windows (windows requires powershell). 
-- Add a log file that logs the entire conversation, including commands ouptput. 
-- speech to text always running and responding only when saying "Jarvis"
-- let the bot summarize the conversation every x queries to shorten history. 
+- Add "VOICE" variable that determines whether to activate tts/stt or run in terminal mode only.
+- speech to text always running and responding only when saying "Jarvis" - requires multi-threading. One thread listens while the other performs tasks so you can say "stop"/"mute" while it is speaking.
 - reorganize main.py and cleanup. 
+- reorganize all modules into folders. 
+- add UI. 
 
-
-DONE:
-- add basic context variables such as OS, user's name etc. - Done.
-- genesis context explaining structure of history, user's vars, sessions, how to run commands and how to run queries. - Done.

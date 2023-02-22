@@ -7,7 +7,7 @@ from logs import logger # Logging
 try:
     logger.info('Initializing Text-To-Speech engine')
     talkbot = pyttsx3.init()
-    talkbot.setProperty('rate', 130)        # Setting the voice's talking speed
+    talkbot.setProperty('rate', 150)        # Setting the voice's talking speed
     talkbot.setProperty('volume', 1.0)      # Setting the volume level between 0 and 1
     voices = talkbot.getProperty('voices')  # Getting details of current voice
     talkbot.setProperty('voice', 0)         # 0 for male voice.
@@ -31,16 +31,17 @@ def read_answer_to_user(answer, OS):
 
     if OS == "Windows":
         try:
-            logger.info('Reading answer to user (Windows TTS)')
+            logger.info(f'Reading answer to user (Windows TTS): {answer}')
             talkbot.say(answer)
             talkbot.runAndWait()
-            talkbot.stop()
+            #talkbot.stop()
         except Exception as e:
             logger.error(f'Error in Windows Text-To-Speech engine. Make sure that you have all required dependencies for this app.\n {e}')
     
     elif OS == "Linux":
         try:
-            logger.info('Reading answer to use (Linux TTS)')
+            logger.info(f'Reading answer to use (Linux TTS): {answer}')
             subprocess.run(f"espeak -v mb-en1 -s 140 '{answer}'", shell=True, universal_newlines=True, capture_output=True, text=True)
         except Exception as e:
             logger.error(f'Error in Linux Text-To-Speech engine. Make sure that you have all required dependencies of this app. \n {e}')
+

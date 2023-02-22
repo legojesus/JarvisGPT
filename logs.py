@@ -6,7 +6,7 @@ DEBUG = environment.DEBUG
 logger = logging.getLogger('main')
 logger.setLevel(logging.INFO)
 
-fileHandler = logging.FileHandler('conversation.log')
+fileHandler = logging.FileHandler('jarvis.log')
 fileHandler.setLevel(logging.INFO)
 
 consoleHandler = logging.StreamHandler()
