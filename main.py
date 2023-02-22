@@ -1,14 +1,11 @@
-import environment                                      # Get environment vars
-from logs import logger                                 # Logging
-from jarvis import run_jarvis                           # Main function to run Jarvis
-from speech_to_text import get_voice_prompt_from_user   # Voice activation of functions
-
-
+from modules import environment
+from modules.logs import logger
+from modules.jarvis import run_jarvis
 
 OS = environment.OS             # Get the device's OS for context.
 USERNAME = environment.USERNAME # Get the user's username in the OS so the bot will figure out the home folder's path and other user-related context.
 
-logger.info('\n########################## STARTING NEW SESSION ##########################\n')
+logger.info('\n########################## STARTING PROGRAM ##########################\n')
 logger.info(f'Operating system = {OS}, Username = {USERNAME}')
 
 

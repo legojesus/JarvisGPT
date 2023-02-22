@@ -1,6 +1,6 @@
 import openai                   # OpenAI API for processing text and reply like a human.                 
-from logs import logger         # Logging. 
-import environment              # Getting API key from environment
+from modules.logs import logger
+from modules import environment
 
 
 # Init OpenAI

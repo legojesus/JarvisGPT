@@ -1,6 +1,6 @@
 import pyttsx3          # Text to speech synthesizer for Windows (can work on linux but voice sounds horrible)
 import subprocess       # Manually activate espeak as it sounds better than pyttsx3 on linux. On Windows, pyttsx3 sounds great
-from logs import logger # Logging
+from modules.logs import logger
 
 
 # Init pyttsx3 (Py Text-To-Speech)
@@ -37,7 +37,7 @@ def read_answer_to_user(answer, OS):
             #talkbot.stop()
         except Exception as e:
             logger.error(f'Error in Windows Text-To-Speech engine. Make sure that you have all required dependencies for this app.\n {e}')
-    
+
     elif OS == "Linux":
         try:
             logger.info(f'Reading answer to use (Linux TTS): {answer}')

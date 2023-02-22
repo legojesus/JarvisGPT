@@ -1,5 +1,5 @@
-import speech_recognition   # Speech to text library
-from logs import logger     # Logging
+import speech_recognition
+from modules.logs import logger
 
 # Init Speech Recognition
 try:

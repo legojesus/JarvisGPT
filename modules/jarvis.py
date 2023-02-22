@@ -1,7 +1,7 @@
-from speech_to_text import get_voice_prompt_from_user
-from chatgpt import send_prompt_to_openai
-from text_to_speech import read_answer_to_user
-from logs import logger
+from modules.speech_to_text import get_voice_prompt_from_user
+from modules.chatgpt import send_prompt_to_openai
+from modules.text_to_speech import read_answer_to_user
+from modules.logs import logger
 import subprocess   # For running Linux and Windows commands
 
 

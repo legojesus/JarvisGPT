@@ -1,5 +1,5 @@
 import logging                  # Manage logs and logging
-import environment              # Get DEBUG mode from environment
+from modules import environment              # Get DEBUG mode from environment
 
 DEBUG = environment.DEBUG
 
@@ -16,7 +16,6 @@ logger.addHandler(fileHandler)
 
 # If .env file sets DEBUG to TRUE, it will output logs to python terminal in real time
 if DEBUG == "TRUE":
-    print("YES")
     logger.addHandler(consoleHandler)
 
 formatter = logging.Formatter('%(asctime)s: %(message)s', "%Y-%m-%d %H:%M:%S")
