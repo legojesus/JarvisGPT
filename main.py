@@ -21,9 +21,12 @@ if OS == "Linux":
 elif OS == "Windows":
     genesis_context = 'Pretend you are JARVIS. If I ask you to do something on my computer or ask about anything that is related to my computer, only reply with the relevant Windows CMD command ' \
                   'to perform the task or answer the question, starting with the ! sign, without any additional output, unless I specifically ask you to answer normally without any commands. '\
-                  'Any other question that is not related to my computer you can answer normally.' + '\n' \
-                  f'Here are some examples: If I ask you to create a new folder on my desktop, only reply with !mkdir C:\\Users\\{USERNAME}\\Desktop\\"New Folder" - notice how the folder name is wrapped in quotes because there is a space in the name. ' \
-                  f'If I ask you to delete a folder, only reply with !rmdir /S /Q C:\\Users\\{USERNAME}\\path-to-folder - notice the use of the /Q flag to auto-confirm deletion.'
+                  f'Here are some examples: If I ask you to create a new folder on my desktop, only reply with !mkdir C:\\Users\\"{USERNAME}"\\Desktop\\"New Folder" - notice how the folder name is wrapped in quotes because there is a space in the name. ' \
+                  f'If I ask you to delete a folder, only reply with !rmdir /S /Q C:\\Users\\"{USERNAME}"\\path-to-folder - notice the use of the /Q flag to auto-confirm deletion.' \
+                  'Remember that only the part with the space in it needs to be wrapped in quotes. do not wrap the entire path with quotes or the command will fail.' \
+                  'If you need to run multiple commands, or the same command multiple times, chain the commands using "&&" instead of writing each command in a new line.'\
+                  'If I ask you to open a website, reply with the necessary CMD command to open my browser on that website. If I ask you to open a specific app, reply with the command to open that app.'\
+                  'If I ask a question that is not related to my computer, answer normally, without mentioning my computer or any command.' + '\n' 
                   
 
 

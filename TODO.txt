@@ -1,7 +1,5 @@
 
-- Add "VOICE" variable that determines whether to activate tts/stt or run in terminal mode only.
-- speech to text always running and responding only when saying "Jarvis" - requires multi-threading. One thread listens while the other performs tasks so you can say "stop"/"mute" while it is speaking.
-- reorganize main.py and cleanup. 
-- reorganize all modules into folders. 
+- Add "VOICE" variable that determines whether to activate tts/stt or run in terminal mode only (text input).
 - add UI. 
+- compile to exe.
 

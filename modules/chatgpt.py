@@ -26,7 +26,7 @@ def send_prompt_to_openai(prompt):
     completion = None
 
     try:
-        completion = openai.Completion.create(engine=model_engine, prompt=prompt, max_tokens=1000, n=1, stop=None, temperature=0.0)
+        completion = openai.Completion.create(engine=model_engine, prompt=prompt, max_tokens=1000, n=1, stop=None, temperature=0.5)
         logger.info(f"Answer received from ChatGPT: {completion}") # Will provide data on the api call, including tokens count.
     except Exception as e:
         print("Error: ", e)

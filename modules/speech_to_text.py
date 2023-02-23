@@ -5,9 +5,12 @@ from modules.logs import logger
 try:
     logger.info('Initializing Speech-To-Text engine')
     listenbot = speech_recognition.Recognizer()
+    listenbot.dynamic_energy_threshold = False
+    listenbot.energy_threshold = 100
     logger.info('Speech-To-Text engine successfully initialized')
 except Exception as e:
     logger.error(f'Failed to initilize Speech-To-Text engine. Make sure you have all required depdendencies of this app.\n {e}')
+
 
 def get_voice_prompt_from_user():
     """
@@ -25,13 +28,11 @@ def get_voice_prompt_from_user():
         with speech_recognition.Microphone() as source:
              
             # Wait for a second to let the recognizer adjust the volume threshold based on the surrounding noise level
-            listenbot.adjust_for_ambient_noise(source, duration=1.0)
+            #listenbot.adjust_for_ambient_noise(source, duration=0.5)
              
             # Listens to the user's voice input
             print("Listening. Please talk now.")
-            listenbot.pause_threshold = 1
-            audio = listenbot.listen(source)
-            
+            audio = listenbot.listen(source, timeout=9999)
             if audio is not None:
                 logger.info('Converting user voice prompt to text via Google API')
                 new_text = listenbot.recognize_google(audio)

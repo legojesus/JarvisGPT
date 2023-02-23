@@ -1,5 +1,5 @@
-import pyttsx3          # Text to speech synthesizer for Windows (can work on linux but voice sounds horrible)
-import subprocess       # Manually activate espeak as it sounds better than pyttsx3 on linux. On Windows, pyttsx3 sounds great
+import pyttsx3
+import subprocess
 from modules.logs import logger
 
 
