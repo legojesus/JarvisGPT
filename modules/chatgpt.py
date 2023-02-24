@@ -31,7 +31,7 @@ def send_prompt_to_openai(prompt):
     except Exception as e:
         print("Error: ", e)
         logger.error(f'ChatGPT error: {e}')
-        exit()
+        #exit()
 
     # Get the first reply
     if completion is not None:

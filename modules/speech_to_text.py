@@ -6,7 +6,7 @@ try:
     logger.info('Initializing Speech-To-Text engine')
     listenbot = speech_recognition.Recognizer()
     listenbot.dynamic_energy_threshold = False
-    listenbot.energy_threshold = 100
+    listenbot.energy_threshold = 300
     logger.info('Speech-To-Text engine successfully initialized')
 except Exception as e:
     logger.error(f'Failed to initilize Speech-To-Text engine. Make sure you have all required depdendencies of this app.\n {e}')
@@ -32,7 +32,7 @@ def get_voice_prompt_from_user():
              
             # Listens to the user's voice input
             print("Listening. Please talk now.")
-            audio = listenbot.listen(source, timeout=9999)
+            audio = listenbot.listen(source, timeout=10)
             if audio is not None:
                 logger.info('Converting user voice prompt to text via Google API')
                 new_text = listenbot.recognize_google(audio)
