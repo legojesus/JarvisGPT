@@ -78,7 +78,7 @@ def run_jarvis(genesis_context, OS):
                 print(help_sentence)
                 read_answer_to_user(help_sentence, OS)
                 continue
-
+            no_user_input_count = 0
             history += prompt + '\n'
             logger.info('Sending user query to ChatGPT')
             answer = send_prompt_to_openai(history)
