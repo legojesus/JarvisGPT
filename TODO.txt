@@ -1,1 +1,3 @@
 - Write a better loop in jarvis.py to handle voice on/off scenarios.
+- When voice mode is active, handle exceptions for when pressing CTRL+C to force it to stop talking so that program won't stop.
+- CLEAN THE FUCK UP. THIS CODE IS A MESS.
