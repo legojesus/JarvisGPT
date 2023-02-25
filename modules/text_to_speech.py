@@ -1,6 +1,9 @@
 import pyttsx3
 import subprocess
 from modules.logs import logger
+import modules.environment
+
+
 
 
 # Init pyttsx3 (Py Text-To-Speech)
@@ -18,7 +21,7 @@ except Exception as e:
 
 
 
-def read_answer_to_user(answer, OS):
+def read_answer_to_user(answer, OS, voice=modules.environment.VOICE_MODE):
     """
     Reads ChatGPT's answer back to the user (text-to-speech).
 
@@ -29,19 +32,27 @@ def read_answer_to_user(answer, OS):
             None.
     """
 
-    if OS == "Windows":
-        try:
-            logger.info(f'Reading answer to user (Windows TTS): {answer}')
-            talkbot.say(answer)
-            talkbot.runAndWait()
-            #talkbot.stop()
-        except Exception as e:
-            logger.error(f'Error in Windows Text-To-Speech engine. Make sure that you have all required dependencies for this app.\n {e}')
+    if voice == "TRUE":
 
-    elif OS == "Linux":
-        try:
-            logger.info(f'Reading answer to use (Linux TTS): {answer}')
-            subprocess.run(f"espeak -v mb-en1 -s 140 '{answer}'", shell=True, universal_newlines=True, capture_output=True, text=True)
-        except Exception as e:
-            logger.error(f'Error in Linux Text-To-Speech engine. Make sure that you have all required dependencies of this app. \n {e}')
+        if OS == "Windows":
+            try:
+                logger.info(f'Reading answer to user (Windows TTS): {answer}')
+                print(answer)
+                talkbot.say(answer)
+                talkbot.runAndWait()
+                #talkbot.stop()
 
+            except Exception as ex:
+                logger.error(f'Error in Windows Text-To-Speech engine. Make sure that you have all required dependencies for this app.\n {ex}')
+
+        elif OS == "Linux":
+            try:
+                logger.info(f'Reading answer to use (Linux TTS): {answer}')
+                print(answer)
+                subprocess.run(f"espeak -v mb-en1 -s 140 '{answer}'", shell=True, universal_newlines=True, capture_output=True, text=True)
+
+            except Exception as ex:
+                logger.error(f'Error in Linux Text-To-Speech engine. Make sure that you have all required dependencies of this app. \n {ex}')
+
+    else:
+        print("Jarvis: ", answer)

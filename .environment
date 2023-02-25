@@ -1,5 +1,6 @@
 # Add your API key and your username in Linux/Windows here, then rename this file to ".env" before activating the app.
 
-DEBUG="FALSE"
-USERNAME="\"John Smith\""
-API_KEY="xxxxxxxxx"
+API_KEY="xxxxxxxxx"         # Your OpenAI API key.
+DEBUG="FALSE"               # Debug on/off. Only accepts "TRUE" or "FALSE".
+VOICE_MODE="TRUE"           # Whether to run the app in voice mode (talk to Jarvis and it will talk back), or in CLI text input/output.
+USERNAME="\"John Smith\""   # Your username in the operating system. Used to help Jarvis figure out your home folder's path.

@@ -1,5 +1,1 @@
-
-- Add "VOICE" variable that determines whether to activate tts/stt or run in terminal mode only (text input).
-- add UI. 
-- compile to exe.
-
+- Write a better loop in jarvis.py to handle voice on/off scenarios.

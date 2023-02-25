@@ -1,7 +1,8 @@
-from modules.speech_to_text import get_voice_prompt_from_user
+from modules.speech_to_text import get_prompt_from_user
 from modules.chatgpt import send_prompt_to_openai
 from modules.text_to_speech import read_answer_to_user
 from modules.logs import logger
+import modules.environment
 import subprocess
 
 
@@ -12,17 +13,21 @@ def run_jarvis(genesis_context, OS):
     no_user_input_count = 0
     jarvis_sleeping = True
 
-    start_sentence = "Welcome sir. Say the word Help to get more info on what you can do, or start a conversation now by calling my name - Jarvis."
-    help_sentence = "The available commands are: Exit, Mute, Jarvis, Reset, and Help. Exit will shut me down completely. Mute will put me to sleep. Jarvis will wake me up. Reset will clear conversation history and start a fresh new conversation. Help will repeat these instructions. " \
-                    "Start a conversation by saying Jarvis and wait for me to confirm. After that, speak freely and ask me anything you want. I can perform commands on your computer and I can answer any and all general questions. " \
+    if modules.environment.VOICE_MODE == "TRUE":
+        start_sentence = "Welcome sir. Say the word Help to get more info on what you can do, or start a conversation now by calling my name - Jarvis."
+    else:
+        start_sentence = "Welcome sir. Type the word Help to get more info on what you can do, or type Jarvis to start a conversation now."
+
+    help_sentence = "The available commands are: \n - Exit. \n - Mute. \n - Jarvis. \n - Reset. \n - Help. \n \n Exit will shut me down completely. Mute will put me to sleep. Jarvis will wake me up. Reset will clear conversation history and start a fresh new conversation. Help will repeat these instructions. \n " \
+                    "Start a conversation by saying Jarvis and wait for me to confirm. After that, speak freely and ask me anything you want. \n I can perform commands on your computer and I can answer any and all general questions. " \
                     "If at any point my replies get mixed up or are persistently wrong, say the word, Reset, and we'll start over."
 
-    print(start_sentence)
+
     read_answer_to_user(start_sentence, OS)
 
     while jarvis_sleeping:
 
-        user_text = get_voice_prompt_from_user()
+        user_text = get_prompt_from_user()
 
         if user_text is None:
             logger.info("No voice input detected in sleep loop, restarting loop")
@@ -38,13 +43,11 @@ def run_jarvis(genesis_context, OS):
             read_answer_to_user("Listening sir.", OS)
         elif user_text == "help" or user_text == "Help":
             logger.info("User said the word help, letting Jarvis explain all possible commands and useage")
-            print(help_sentence)
             read_answer_to_user(help_sentence, OS)
 
         while jarvis_sleeping is False:
             logger.info(f'Conversation query #{conversation_count}. Waiting for user input')
-            # prompt = input("Talk to JARVIS: ")     # Text input via terminal
-            prompt = get_voice_prompt_from_user()  # Voice input via microphone
+            prompt = get_prompt_from_user()
             logger.info(f'User: {prompt}.')
 
             if prompt == 'exit':
@@ -75,7 +78,6 @@ def run_jarvis(genesis_context, OS):
                     continue
             elif prompt == 'help':
                 logger.info("User said the word help, letting Jarvis explain all possible commands and useage")
-                print(help_sentence)
                 read_answer_to_user(help_sentence, OS)
                 continue
             no_user_input_count = 0
@@ -84,6 +86,7 @@ def run_jarvis(genesis_context, OS):
             answer = send_prompt_to_openai(history)
             answer = str(answer.strip())
             logger.info(f'ChatGPT: {answer}.')
+            print("Jarvis: ", answer)
             history += answer + '\n'
 
             if answer.startswith('!'):
@@ -125,7 +128,7 @@ def run_jarvis(genesis_context, OS):
                         else:
                             logger.info('Jarvis: Command executed successfully')
                             answer = "Done. \n"
-                            print("Done. \n")
+                            #print("Done. \n")
                             read_answer_to_user(answer, OS)
 
                 except Exception as e:

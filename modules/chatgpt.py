@@ -36,8 +36,8 @@ def send_prompt_to_openai(prompt):
     # Get the first reply
     if completion is not None:
         reply = completion.choices[0].text
-        print(reply)
-        print("\n")
+        #print(reply)
+        #print("\n")
         return reply
     
     logger.warning('Received blank answer from ChatGPT. Either user prompt was empty or something went wrong when sending query to ChatGPT')
