@@ -18,11 +18,13 @@ def run_jarvis(genesis_context, OS):
     else:
         start_sentence = "Welcome sir. Type the word Help to get more info on what you can do, or type Jarvis to start a conversation now."
 
-    help_sentence = "The available commands are: \n - Exit. \n - Mute. \n - Jarvis. \n - Reset. \n - Help. \n \n Exit will shut me down completely. Mute will put me to sleep. Jarvis will wake me up. Reset will clear conversation history and start a fresh new conversation. Help will repeat these instructions. \n " \
-                    "Start a conversation by saying Jarvis and wait for me to confirm. After that, speak freely and ask me anything you want. \n I can perform commands on your computer and I can answer any and all general questions. " \
-                    "If at any point my replies get mixed up or are persistently wrong, say the word, Reset, and we'll start over."
+    help_sentence = "The available commands are: \n - Exit. \n - Mute. \n - Jarvis. \n - Reset. \n - Help. \n - About. \n \n Exit will shut me down completely.\n Mute will put me to sleep.\n Jarvis will wake me up.\n Reset will clear conversation history and start a fresh new conversation. \n Help will repeat these instructions. \n About will list the version and other info. \n" \
+                    "Start a conversation by saying/typing Jarvis and wait for me to confirm.\n After that, speak/type freely and ask me anything you want. \n I can perform commands on your computer and I can answer any and all general questions. " \
+                    "If at any point my replies get mixed up or are persistently wrong, say/type the word Reset and we'll start over."
+    
+    about_sentence = "JarvisGPT 0.3 Alpha. \n Created by Yaron Kachalon (https://www.linkedin.com/in/yaronka/). \n \n JarvisGPT is a ChatGPT powered app that allows you to have a JARVIS like virtual assistant on your computer, that can answer general questions but can also run any and all Windows/Linux commands! Use it wisely. \n"
 
-
+    
     read_answer_to_user(start_sentence, OS)
 
     while jarvis_sleeping:
@@ -34,6 +36,7 @@ def run_jarvis(genesis_context, OS):
             continue
         elif user_text == "exit" or user_text == "Exit":
             logger.info("User said the word exit, stopping program entirely")
+            logger.info("\n########################## Exiting ###########################\n")
             read_answer_to_user("Goodbye sir.", OS)
             exit()
         elif "Jarvis" in user_text or "jarvis" in user_text:
@@ -44,6 +47,9 @@ def run_jarvis(genesis_context, OS):
         elif user_text == "help" or user_text == "Help":
             logger.info("User said the word help, letting Jarvis explain all possible commands and useage")
             read_answer_to_user(help_sentence, OS)
+        elif user_text == "about" or user_text == "About":
+            logger.info("User said the word about, printing the About info of the app.")
+            read_answer_to_user(about_sentence, OS)
 
         while jarvis_sleeping is False:
             logger.info(f'Conversation query #{conversation_count}. Waiting for user input')
@@ -86,14 +92,14 @@ def run_jarvis(genesis_context, OS):
             answer = send_prompt_to_openai(history)
             answer = str(answer.strip())
             logger.info(f'ChatGPT: {answer}.')
-            print("Jarvis: ", answer)
+            #print("Jarvis: ", answer)
             history += answer + '\n'
 
             if answer.startswith('!'):
                 logger.info('Jarvis: The reply is a command. I will take it from here. Executing...')
                 try:
                     answer = answer.replace('!', '', )
-                    # answer = answer.replace('\n', ' && ')
+                    print(answer + '\n')
 
                     if answer.startswith("start"):
                         command = subprocess.Popen(answer, shell=True, universal_newlines=True,
@@ -106,7 +112,7 @@ def run_jarvis(genesis_context, OS):
                         if len(command.stdout) > 0:
                             logger.info(f"Jarvis: {command.stdout}")
                             print("Command output: ", command.stdout)
-                            history += 'I ran the command, here is the output:' + command.stdout + '\n' + 'Reply with relevant info according to this output without repeating what I wrote.' + '\n'
+                            history += 'Reply normally to the following command output without repeating this sentence and without saying the word "answer":' + command.stdout + '\n'
                             logger.info('Sending command output back to ChatGPT')
                             answer = send_prompt_to_openai(history)
                             answer = str(answer.strip())
@@ -117,7 +123,7 @@ def run_jarvis(genesis_context, OS):
                         elif len(command.stderr) > 0:
                             logger.warning(f"Jarvis: {command.stderr}")
                             print("Command error: ", command.stderr)
-                            history += 'I ran the command and there was an error. Error output: ' + command.stderr + '\n'
+                            history += 'Reply normally to the following Error output without repeating this sentence and without saying the word "answer": ' + command.stderr + '\n'
                             logger.info('Sending command error back to ChatGPT')
                             answer = send_prompt_to_openai(history)
                             answer = str(answer.strip())

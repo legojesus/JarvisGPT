@@ -38,7 +38,7 @@ def get_prompt_from_user(voice=modules.environment.VOICE_MODE):
                     logger.info('Converting user voice prompt to text via Google API')
                     new_text = listenbot.recognize_google(audio)
                     logger.info(f'Converted voice to text: {new_text}')
-                    print("Voice input: ", new_text)
+                    print(f"Voice input: {new_text}. \n")
 
                     return new_text
                 return None
@@ -55,6 +55,7 @@ def get_prompt_from_user(voice=modules.environment.VOICE_MODE):
 
     else:
         new_text = input("Talk to Jarvis: ")
+        print("\n")
         return new_text
 
 

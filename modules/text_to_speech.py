@@ -55,4 +55,4 @@ def read_answer_to_user(answer, OS, voice=modules.environment.VOICE_MODE):
                 logger.error(f'Error in Linux Text-To-Speech engine. Make sure that you have all required dependencies of this app. \n {ex}')
 
     else:
-        print("Jarvis: ", answer)
+        print(f"Jarvis: {answer} \n")
