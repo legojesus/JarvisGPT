@@ -56,16 +56,16 @@ def run_jarvis(genesis_context, OS):
             prompt = get_prompt_from_user()
             logger.info(f'User: {prompt}.')
 
-            if prompt == 'exit':
+            if prompt == 'exit' or prompt == "Exit":
                 logger.info("\n########################## Exiting ###########################\n")
                 read_answer_to_user("Goodbye sir.", OS)
                 exit()
-            elif prompt == 'reset':
+            elif prompt == 'reset' or prompt == "Reset":
                 logger.warning("!!!Clearing history session, starting new conversation!!!")
                 history = genesis_context
                 read_answer_to_user("Conversation history reset. Starting a new conversation.", OS)
                 continue
-            elif prompt == 'mute':
+            elif prompt == 'mute' or prompt == "Mute":
                 logger.warning("User said the word mute, muting jarvis and exiting to main loop")
                 read_answer_to_user("Muting.", OS)
                 jarvis_sleeping = True
@@ -82,10 +82,15 @@ def run_jarvis(genesis_context, OS):
                     logger.info(
                         f"No user input detected in inner function loop (count = {no_user_input_count}), restarting loop. ")
                     continue
-            elif prompt == 'help':
+            elif prompt == 'help' or prompt == "Help":
                 logger.info("User said the word help, letting Jarvis explain all possible commands and useage")
                 read_answer_to_user(help_sentence, OS)
                 continue
+            elif prompt == "about" or prompt == "About":
+                logger.info("User said the word about, printing the About info of the app.")
+                read_answer_to_user(about_sentence, OS)
+                continue
+
             no_user_input_count = 0
             history += prompt + '\n'
             logger.info('Sending user query to ChatGPT')
@@ -112,7 +117,7 @@ def run_jarvis(genesis_context, OS):
                         if len(command.stdout) > 0:
                             logger.info(f"Jarvis: {command.stdout}")
                             print("Command output: ", command.stdout)
-                            history += 'Reply normally to the following command output without repeating this sentence and without saying the word "answer":' + command.stdout + '\n'
+                            history += 'Reply normally to the following command output without repeating this sentence and without starting your reply with "Answer:" or "Acknowledged" : ' + command.stdout + '\n'
                             logger.info('Sending command output back to ChatGPT')
                             answer = send_prompt_to_openai(history)
                             answer = str(answer.strip())
@@ -123,7 +128,7 @@ def run_jarvis(genesis_context, OS):
                         elif len(command.stderr) > 0:
                             logger.warning(f"Jarvis: {command.stderr}")
                             print("Command error: ", command.stderr)
-                            history += 'Reply normally to the following Error output without repeating this sentence and without saying the word "answer": ' + command.stderr + '\n'
+                            history += 'Reply normally to the following Error output without repeating this sentence and without starting your reply with "Answer:" or "Acknowledged" : ' + command.stderr + '\n'
                             logger.info('Sending command error back to ChatGPT')
                             answer = send_prompt_to_openai(history)
                             answer = str(answer.strip())
@@ -151,6 +156,7 @@ def run_jarvis(genesis_context, OS):
                 history += 'Please summarize our conversation so far so that I can use it as a short context for you in the future.' \
                            'Make sure to include the commands used, paths created/visited and any other important info that I might ask you about later for reference.\n '
                 logger.info('Asking ChatGPT to summarize conversation')
+                print("Jarvis: Conversation too long, summarizing context internally. This can take a few seconds.")
                 answer = send_prompt_to_openai(history)
                 history = genesis_context + answer + '\n'
                 conversation_count = 0
