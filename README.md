@@ -3,6 +3,9 @@
 This python app utilizes OpenAI API to allow users to write or talk to ChatGPT, and it will reply with either a normal
 ChatGPT-like answer, or it will run an actual command on your computer to complete the task that you asked it to. 
 
+
+![New Project](https://user-images.githubusercontent.com/16307980/229065498-3b4d588b-8fec-41d5-abec-946b0237ee85.gif)
+
 ## How it works
 
 This program provides ChatGPT with context to act like Jarvis from Iron Man, and letting it know that it can run commands on the user's machine. 
