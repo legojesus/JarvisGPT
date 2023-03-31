@@ -10,7 +10,8 @@ try:
     listenbot.energy_threshold = 300
     logger.info('Speech-To-Text engine successfully initialized')
 except Exception as e:
-    logger.error(f'Failed to initilize Speech-To-Text engine. Make sure you have all required depdendencies of this app.\n {e}')
+    logger.error(
+        f'Failed to initilize Speech-To-Text engine. Make sure you have all required depdendencies of this app.\n {e}')
 
 
 def get_prompt_from_user(voice=modules.environment.VOICE_MODE):
@@ -28,9 +29,6 @@ def get_prompt_from_user(voice=modules.environment.VOICE_MODE):
             logger.info('Waiting for voice input from user')
             with speech_recognition.Microphone() as source:
 
-                # Wait for a second to let the recognizer adjust the volume threshold based on the surrounding noise level
-                #listenbot.adjust_for_ambient_noise(source, duration=0.5)
-
                 # Listens to the user's voice input
                 print("Listening. Please talk now.")
                 audio = listenbot.listen(source, timeout=10)
@@ -46,7 +44,6 @@ def get_prompt_from_user(voice=modules.environment.VOICE_MODE):
         except speech_recognition.RequestError as e:
             logger.error(f"Could not process speech recognition request.\n {e}")
 
-
         except speech_recognition.UnknownValueError:
             logger.info('No voice input detected.')
 
@@ -57,6 +54,3 @@ def get_prompt_from_user(voice=modules.environment.VOICE_MODE):
         new_text = input("Talk to Jarvis: ")
         print("\n")
         return new_text
-
-
-

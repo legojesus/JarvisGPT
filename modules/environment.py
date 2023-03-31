@@ -15,5 +15,6 @@ try:
     api_key = os.getenv("API_KEY")
 except Exception as e:
     print(e)
-    print("Couldn't get OpenAI API key. Please make sure you have a .env file in this folder that contains the API key in the following format: API_KEY=\"xxxxxxx\"")
+    print("Couldn't get OpenAI API key. Please make sure you have a .env file in this folder that contains the API key "
+          "in the following format: API_KEY=\"xxxxxxx\"")
     exit()

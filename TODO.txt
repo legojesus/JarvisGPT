@@ -1,4 +1,0 @@
-- Write a better loop in jarvis.py to handle voice on/off scenarios.
-- Find a way to stop voice mid-sentence without terminating the program.
-- Add "About" command and provide info on myself and the app in the about text. 
-- CLEAN THE FUCK UP. THIS CODE IS A MESS.

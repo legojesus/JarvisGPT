@@ -8,7 +8,9 @@ USERNAME = environment.USERNAME  # Get the user's username in the OS so the bot 
 logger.info('\n########################## STARTING PROGRAM ##########################\n')
 logger.info(f'Operating system = {OS}, Username = {USERNAME}')
 
-# Initialize genesis context that contains the basic description for ChatGPT on how to act and respond to user's queries based on the device's OS.
+# Initialize genesis context.
+# Genesis context is a string that contains the basic context for ChatGPT on how to act and respond to user's
+# queries based on the device's OS.
 genesis_context = None
 
 if OS == "Linux":
