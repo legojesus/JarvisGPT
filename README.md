@@ -51,7 +51,8 @@ This is a proof-of-concept app only and is not intended for serius/professional 
 Please use this app with caution - while JarvisGPT does not have admin/sudo privileges, it can still delete/modify/move actual files/folders in your user's home folder! so make sure you are providing it with the correct instructions/context before telling it to do anything of that sort. 
 
 ## License
-Free to use for personal use only. You may not use any of this code for any commercial applications/intentions without my written consent.
+Free to use for personal use only. 
+You may not use any of this code for commercial applications/intentions.
 
 ## Future features / TODO
 - Add Mac support.
