@@ -6,7 +6,7 @@ from modules import environment
 logger.info('Initializing OpenAI/ChatGPT backend')
 openai.api_key = environment.api_key
 
-model_engine = "gpt-3.5-turbo"  # The OpenAI GPT-3 model version.
+model_engine = "text-davinci-003"  # The OpenAI GPT-3 model version.
 # Reference: https://platform.openai.com/docs/models/gpt-3
 logger.info(f'Model engine is: {model_engine}')
 
@@ -21,9 +21,7 @@ def send_prompt_to_openai(prompt):
         Returns:
             reply (string): The answer received from ChatGPT.
     """
-    # Send prompt to ChatGPT and get possible replies.
     # Reference: https://platform.openai.com/docs/api-reference/completions/create
-
     completion = None
 
     try:
